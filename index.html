@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Tailwind (Play CDN) - required for all the flex/grid/text-center/etc utility classes used below -->
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root{
     --emerald-950:#08170f;
@@ -210,6 +212,29 @@
     height:1px; opacity:.5;
   }
 
+  /* =========================================================
+     BACKGROUND IMAGES — how to use
+     -------------------------------------------------------
+     Any section can get a photo background by adding a
+     <div class="bg-photo" style="background-image:url('YOUR_IMAGE_URL')"></div>
+     as the FIRST child inside that <section>, right after the
+     opening tag. The section needs class="relative" (already
+     added to hero/venue/footer). The dark/gold gradient overlay
+     is automatic so text stays readable — you don't add that.
+     Swap the URL to any image (your own uploaded photo path,
+     or an https:// link). Recommended size: 1600px wide or more.
+     ========================================================= */
+  .bg-photo{
+    position:absolute; inset:0; z-index:0;
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+  }
+  .bg-photo::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(8,23,15,0.55) 0%, rgba(8,23,15,0.82) 55%, rgba(8,23,15,0.95) 100%);
+  }
+  /* keep real content above the photo layer */
+  section > *:not(.bg-photo){ position:relative; z-index:1; }
+
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
   }
@@ -274,6 +299,8 @@
 
   <!-- HERO -->
   <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-24 overflow-hidden">
+    <!-- Example background photo — replace the URL below with your own couple photo -->
+    <div class="bg-photo" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop');"></div>
     <div class="glow" style="width:520px;height:520px; top:-140px; left:50%; transform:translateX(-50%);"></div>
     <div class="ornament reveal-scale" data-reveal style="top:34px; left:50%; transform:translateX(-50%); width:180px;">
       <svg viewBox="0 0 180 50" fill="none"><path d="M5 25 C 45 3, 135 3, 175 25" stroke="#c9a25a" stroke-width="0.8"/><circle cx="90" cy="10" r="2.5" fill="#c9a25a"/></svg>
@@ -469,6 +496,8 @@
 
   <!-- CLOSING -->
   <footer class="relative px-6 py-28 text-center overflow-hidden">
+    <!-- Example background photo — replace the URL below with your own -->
+    <div class="bg-photo" style="background-image:url('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1600&auto=format&fit=crop');"></div>
     <div class="glow" style="width:460px;height:460px; bottom:-160px; left:50%; transform:translateX(-50%);"></div>
     <div class="ornament reveal-scale mx-auto mb-8" data-reveal style="width:160px; position:relative;">
       <svg viewBox="0 0 160 40" fill="none"><path d="M5 20 C 40 2, 120 2, 155 20" stroke="#c9a25a" stroke-width="0.8"/><circle cx="80" cy="8" r="2.5" fill="#c9a25a"/></svg>
