@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Aqeel &amp; Hana — 10.12.2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --emerald-950:#08170f;
+    --emerald-900:#0d2118;
+    --emerald-800:#123024;
+    --emerald-700:#1a4534;
+    --emerald-600:#255a41;
+    --gold:#c9a25a;
+    --gold-soft:#e3c98a;
+    --ivory:#f5efe2;
+    --ivory-dim:#e9e0cc;
+    --line:rgba(201,162,90,0.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--emerald-950);
+    color:var(--ivory);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  .font-display{ font-family:'Cormorant Garamond', serif; }
+  .font-sc{ font-family:'Cormorant SC', serif; letter-spacing:0.18em; }
+
+  ::selection{ background:var(--gold); color:var(--emerald-950); }
+
+  /* ---------- scrollbar (desktop) ---------- */
+  ::-webkit-scrollbar{ width:6px; }
+  ::-webkit-scrollbar-track{ background:var(--emerald-950); }
+  ::-webkit-scrollbar-thumb{ background:var(--gold); border-radius:4px; }
+
+  /* ---------- utility ---------- */
+  .eyebrow{
+    font-family:'Cormorant SC', serif;
+    letter-spacing:0.35em;
+    font-size:12px;
+    color:var(--gold-soft);
+    text-transform:uppercase;
+  }
+  .divider{
+    width:1px; height:44px;
+    background:linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin:0 auto;
+  }
+  .hline{
+    height:1px;
+    background:linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .card-dark{
+    background:radial-gradient(140% 100% at 50% 0%, var(--emerald-800) 0%, var(--emerald-900) 55%, var(--emerald-950) 100%);
+    border:1px solid var(--line);
+  }
+  .card-ivory{
+    background:linear-gradient(180deg, #faf6ea 0%, var(--ivory) 100%);
+    color:var(--emerald-900);
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Jost', sans-serif; font-weight:500; letter-spacing:0.12em;
+    text-transform:uppercase; font-size:12px;
+    padding:14px 28px;
+    border:1px solid var(--gold);
+    color:var(--gold-soft);
+    background:transparent;
+    border-radius:2px;
+    cursor:pointer;
+    transition:all .45s cubic-bezier(.2,.7,.2,1);
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .btn:hover{ background:var(--gold); color:var(--emerald-950); box-shadow:0 0 24px rgba(201,162,90,0.35); }
+  .btn-solid{
+    background:var(--gold); color:var(--emerald-950); border:1px solid var(--gold);
+  }
+  .btn-solid:hover{ background:var(--gold-soft); border-color:var(--gold-soft); }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{ opacity:0; transform:translateY(28px); filter:blur(4px); transition:opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1), filter 1s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); filter:blur(0); }
+  .reveal-scale{ opacity:0; transform:scale(.92); transition:opacity 1.1s ease, transform 1.1s cubic-bezier(.2,.7,.2,1); }
+  .reveal-scale.in{ opacity:1; transform:scale(1); }
+  .stagger > * { transition-delay: calc(var(--i,0) * 120ms); }
+
+  /* ---------- floating petals / glow ---------- */
+  .glow{
+    position:absolute; border-radius:50%;
+    background:radial-gradient(circle, rgba(201,162,90,0.22) 0%, rgba(201,162,90,0) 70%);
+    filter:blur(10px); pointer-events:none;
+  }
+  @keyframes drift{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:.55; }
+    90%{ opacity:.4; }
+    100%{ transform:translateY(-120vh) translateX(30px) rotate(200deg); opacity:0; }
+  }
+  .petal{
+    position:absolute; bottom:-10%;
+    width:14px; height:14px;
+    background:radial-gradient(circle at 30% 30%, var(--gold-soft), transparent 70%);
+    border-radius:60% 40% 60% 40%;
+    animation:drift linear infinite;
+    pointer-events:none;
+  }
+
+  /* ---------- opening screen ---------- */
+  #opener{
+    position:fixed; inset:0; z-index:100;
+    background:radial-gradient(120% 100% at 50% 20%, var(--emerald-800) 0%, var(--emerald-950) 70%);
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity 1.1s ease, visibility 1.1s ease;
+  }
+  #opener.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+  .seal{
+    width:104px; height:104px; border-radius:50%;
+    border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    animation:pulseSeal 3.2s ease-in-out infinite;
+  }
+  @keyframes pulseSeal{
+    0%,100%{ box-shadow:0 0 0 0 rgba(201,162,90,0.25); }
+    50%{ box-shadow:0 0 0 14px rgba(201,162,90,0); }
+  }
+  .seal::before{
+    content:''; position:absolute; inset:8px; border:1px solid var(--gold); border-radius:50%; opacity:.5;
+  }
+
+  /* ---------- corner ornament (svg) ---------- */
+  .ornament{ position:absolute; opacity:.55; pointer-events:none; }
+
+  /* ---------- countdown ---------- */
+  .count-box{
+    width:72px;
+  }
+  @media(min-width:640px){ .count-box{ width:92px; } }
+
+  /* ---------- gallery ---------- */
+  .gallery-item{
+    position:relative; overflow:hidden; border-radius:2px;
+    border:1px solid var(--line);
+  }
+  .gallery-item img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transform:scale(1.04);
+    transition:transform 1.2s cubic-bezier(.2,.7,.2,1), filter .8s ease;
+  }
+  .gallery-item:hover img{ transform:scale(1.14); }
+  .gallery-item::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 55%, rgba(8,23,15,0.75) 100%);
+    opacity:0; transition:opacity .5s ease;
+  }
+  .gallery-item:hover::after{ opacity:1; }
+
+  #lightbox{
+    position:fixed; inset:0; background:rgba(6,15,10,0.94); z-index:200;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease;
+  }
+  #lightbox.show{ opacity:1; visibility:visible; }
+  #lightbox img{ max-width:88vw; max-height:82vh; border:1px solid var(--gold); }
+
+  /* ---------- nav dots ---------- */
+  .nav-dot{
+    width:7px; height:7px; border-radius:50%;
+    background:rgba(245,239,226,0.35);
+    transition:all .4s ease;
+  }
+  .nav-dot.active{ background:var(--gold); transform:scale(1.4); }
+
+  /* ---------- RSVP toggle ---------- */
+  .rsvp-choice{
+    border:1px solid var(--line);
+    transition:all .35s ease;
+  }
+  .rsvp-choice.active{
+    border-color:var(--gold);
+    background:rgba(201,162,90,0.1);
+    color:var(--gold-soft);
+  }
+
+  input, textarea{
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--ivory);
+    font-family:'Jost',sans-serif;
+    font-weight:300;
+    padding:10px 2px;
+    width:100%;
+    outline:none;
+    transition:border-color .3s ease;
+  }
+  input::placeholder, textarea::placeholder{ color:rgba(245,239,226,0.4); }
+  input:focus, textarea:focus{ border-color:var(--gold); }
+
+  .fade-line{
+    background: repeating-linear-gradient(to right, var(--gold) 0, var(--gold) 4px, transparent 4px, transparent 10px);
+    height:1px; opacity:.5;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- ===================== OPENING SCREEN ===================== -->
+<div id="opener">
+  <div class="text-center px-6 relative">
+    <div class="ornament" style="top:-70px; left:50%; transform:translateX(-50%); width:220px;">
+      <svg viewBox="0 0 220 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 30 C 60 5, 160 5, 210 30" stroke="#c9a25a" stroke-width="0.8"/>
+        <circle cx="110" cy="14" r="3" fill="#c9a25a" opacity="0.7"/>
+        <circle cx="70" cy="20" r="2" fill="#e3c98a" opacity="0.6"/>
+        <circle cx="150" cy="20" r="2" fill="#e3c98a" opacity="0.6"/>
+      </svg>
+    </div>
+    <p class="eyebrow mb-4">You are cordially invited</p>
+    <h1 class="font-display italic" style="font-size:clamp(38px,9vw,64px); line-height:1.05; color:var(--ivory);">Aqeel <span style="color:var(--gold);">&amp;</span> Hana</h1>
+    <p class="font-sc mt-3 text-[13px]" style="color:var(--ivory-dim);">10 · 12 · 2026</p>
+
+    <button id="openBtn" class="seal mx-auto mt-10 group">
+      <span class="font-sc text-[10px]" style="color:var(--gold-soft);">OPEN</span>
+    </button>
+    <p class="eyebrow mt-6" style="opacity:.7;">tap to open invitation</p>
+  </div>
+</div>
+
+<!-- ===================== FLOATING NAV (desktop) ===================== -->
+<nav id="dotNav" class="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-4">
+  <div class="nav-dot" data-target="#hero"></div>
+  <div class="nav-dot" data-target="#story"></div>
+  <div class="nav-dot" data-target="#details"></div>
+  <div class="nav-dot" data-target="#countdown"></div>
+  <div class="nav-dot" data-target="#venue"></div>
+  <div class="nav-dot" data-target="#gallery"></div>
+  <div class="nav-dot" data-target="#rsvp"></div>
+</nav>
+
+<!-- ===================== MOBILE FLOATING MENU ===================== -->
+<button id="mobileMenuBtn" class="md:hidden fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full flex items-center justify-center" style="background:var(--emerald-800); border:1px solid var(--gold);">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h14M1 8h14M1 12h14" stroke="#e3c98a" stroke-width="1"/></svg>
+</button>
+<div id="mobileMenu" class="md:hidden fixed inset-0 z-30 flex items-center justify-center" style="background:rgba(8,23,15,0.97); opacity:0; visibility:hidden; transition:all .4s ease;">
+  <ul class="text-center space-y-6 font-display italic text-2xl">
+    <li><a href="#hero" class="mnav" style="color:var(--ivory);">Hero</a></li>
+    <li><a href="#story" class="mnav" style="color:var(--ivory);">Our Story</a></li>
+    <li><a href="#details" class="mnav" style="color:var(--ivory);">Event</a></li>
+    <li><a href="#countdown" class="mnav" style="color:var(--ivory);">Countdown</a></li>
+    <li><a href="#venue" class="mnav" style="color:var(--ivory);">Venue</a></li>
+    <li><a href="#gallery" class="mnav" style="color:var(--ivory);">Gallery</a></li>
+    <li><a href="#rsvp" class="mnav" style="color:var(--ivory);">RSVP</a></li>
+  </ul>
+</div>
+
+<!-- ===================== PETALS CONTAINER ===================== -->
+<div id="petals" class="fixed inset-0 pointer-events-none z-20"></div>
+
+<!-- ===================== MAIN ===================== -->
+<main id="mainContent" style="opacity:0; transition:opacity 1.4s ease;">
+
+  <!-- HERO -->
+  <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-24 overflow-hidden">
+    <div class="glow" style="width:520px;height:520px; top:-140px; left:50%; transform:translateX(-50%);"></div>
+    <div class="ornament reveal-scale" data-reveal style="top:34px; left:50%; transform:translateX(-50%); width:180px;">
+      <svg viewBox="0 0 180 50" fill="none"><path d="M5 25 C 45 3, 135 3, 175 25" stroke="#c9a25a" stroke-width="0.8"/><circle cx="90" cy="10" r="2.5" fill="#c9a25a"/></svg>
+    </div>
+
+    <p class="eyebrow reveal" data-reveal>Together with their families</p>
+
+    <h1 class="font-display italic reveal" data-reveal style="font-size:clamp(52px,13vw,120px); line-height:0.95; margin:22px 0 6px; color:var(--ivory);">
+      Aqeel
+    </h1>
+    <div class="reveal flex items-center gap-4 my-2" data-reveal>
+      <span class="hline w-10"></span>
+      <span class="font-sc text-[13px]" style="color:var(--gold);">and</span>
+      <span class="hline w-10"></span>
+    </div>
+    <h1 class="font-display italic reveal" data-reveal style="font-size:clamp(52px,13vw,120px); line-height:0.95; margin:6px 0 26px; color:var(--ivory);">
+      Hana
+    </h1>
+
+    <p class="font-display italic reveal" data-reveal style="font-size:20px; color:var(--gold-soft); max-width:420px;">
+      "Two hearts, one beautiful journey."
+    </p>
+
+    <div class="divider my-8 reveal" data-reveal></div>
+
+    <p class="eyebrow reveal" data-reveal>Saturday</p>
+    <p class="font-sc reveal" data-reveal style="font-size:20px; letter-spacing:0.3em; color:var(--ivory); margin-top:6px;">10 DECEMBER 2026</p>
+    <p class="eyebrow reveal mt-2" data-reveal>12:30 PM</p>
+
+    <a href="#details" class="btn mt-12 reveal" data-reveal>View Invitation</a>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-70">
+      <span class="eyebrow" style="font-size:10px;">scroll</span>
+      <div style="width:1px; height:36px; background:linear-gradient(to bottom, var(--gold), transparent);"></div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="story" class="relative px-6 py-28 max-w-3xl mx-auto text-center">
+    <p class="eyebrow reveal" data-reveal>Our Story</p>
+    <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(32px,6vw,48px); margin:14px 0 30px; color:var(--ivory);">How it began</h2>
+
+    <div class="grid sm:grid-cols-3 gap-10 mt-4 stagger">
+      <div class="reveal" data-reveal style="--i:0;">
+        <p class="font-display italic text-3xl" style="color:var(--gold);">01</p>
+        <p class="font-display text-lg mt-3" style="color:var(--ivory-dim);">A chance meeting on a quiet autumn evening, and a conversation that never really ended.</p>
+      </div>
+      <div class="reveal" data-reveal style="--i:1;">
+        <p class="font-display italic text-3xl" style="color:var(--gold);">02</p>
+        <p class="font-display text-lg mt-3" style="color:var(--ivory-dim);">Years of small adventures, quiet mornings, and a friendship that slowly became something more.</p>
+      </div>
+      <div class="reveal" data-reveal style="--i:2;">
+        <p class="font-display italic text-3xl" style="color:var(--gold);">03</p>
+        <p class="font-display text-lg mt-3" style="color:var(--ivory-dim);">A question asked under the stars — and the beginning of forever, together.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-3xl mx-auto px-6"><div class="hline reveal" data-reveal></div></div>
+
+  <!-- EVENT DETAILS -->
+  <section id="details" class="relative px-6 py-28 max-w-5xl mx-auto">
+    <div class="text-center mb-16">
+      <p class="eyebrow reveal" data-reveal>Wedding Day</p>
+      <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(32px,6vw,48px); margin-top:14px; color:var(--ivory);">Join us as we celebrate</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="card-dark reveal p-10 text-center" data-reveal>
+        <p class="font-sc text-[12px]" style="color:var(--gold);">CEREMONY</p>
+        <p class="font-display italic mt-4" style="font-size:34px; color:var(--ivory);">12:30 PM</p>
+        <div class="hline w-16 mx-auto my-5"></div>
+        <p style="color:var(--ivory-dim); font-size:15px; line-height:1.8;">The exchange of vows beneath the garden pavilion, followed by blessings from both families.</p>
+        <button class="btn mt-8 addcal" data-title="Aqeel & Hana - Ceremony" data-start="20261210T073000Z" data-end="20261210T090000Z" data-loc="Emerald Garden Estate">Add to Calendar</button>
+      </div>
+      <div class="card-dark reveal p-10 text-center" data-reveal style="transition-delay:150ms;">
+        <p class="font-sc text-[12px]" style="color:var(--gold);">RECEPTION</p>
+        <p class="font-display italic mt-4" style="font-size:34px; color:var(--ivory);">7:00 PM</p>
+        <div class="hline w-16 mx-auto my-5"></div>
+        <p style="color:var(--ivory-dim); font-size:15px; line-height:1.8;">An evening of dinner, dancing and celebration under the stars with those we hold dear.</p>
+        <button class="btn mt-8 addcal" data-title="Aqeel & Hana - Reception" data-start="20261210T140000Z" data-end="20261210T190000Z" data-loc="Emerald Garden Estate">Add to Calendar</button>
+      </div>
+    </div>
+
+    <div class="text-center mt-16 reveal" data-reveal>
+      <p class="eyebrow mb-3">Dress Code</p>
+      <p class="font-display italic" style="font-size:24px; color:var(--gold-soft);">Emerald &amp; Ivory Elegance</p>
+      <div class="flex justify-center gap-3 mt-6">
+        <span class="w-8 h-8 rounded-full" style="background:#123024; border:1px solid var(--line);"></span>
+        <span class="w-8 h-8 rounded-full" style="background:#255a41; border:1px solid var(--line);"></span>
+        <span class="w-8 h-8 rounded-full" style="background:#c9a25a; border:1px solid var(--line);"></span>
+        <span class="w-8 h-8 rounded-full" style="background:#f5efe2; border:1px solid var(--line);"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section id="countdown" class="relative px-6 py-28 text-center card-ivory overflow-hidden">
+    <div class="glow" style="width:400px;height:400px; background:radial-gradient(circle, rgba(37,90,65,0.15), transparent 70%); top:-100px; right:-100px;"></div>
+    <p class="eyebrow reveal" data-reveal style="color:#255a41;">Counting down to</p>
+    <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(30px,6vw,46px); margin:12px 0 40px; color:var(--emerald-900);">Our Wedding Day</h2>
+
+    <div class="flex justify-center gap-3 sm:gap-6 stagger flex-wrap">
+      <div class="count-box reveal" data-reveal style="--i:0;">
+        <div class="py-5" style="border:1px solid rgba(18,48,36,0.25);">
+          <p id="cd-days" class="font-display" style="font-size:clamp(28px,6vw,44px); color:var(--emerald-900);">00</p>
+        </div>
+        <p class="eyebrow mt-3" style="color:#6b8f7f;">Days</p>
+      </div>
+      <div class="count-box reveal" data-reveal style="--i:1;">
+        <div class="py-5" style="border:1px solid rgba(18,48,36,0.25);">
+          <p id="cd-hours" class="font-display" style="font-size:clamp(28px,6vw,44px); color:var(--emerald-900);">00</p>
+        </div>
+        <p class="eyebrow mt-3" style="color:#6b8f7f;">Hours</p>
+      </div>
+      <div class="count-box reveal" data-reveal style="--i:2;">
+        <div class="py-5" style="border:1px solid rgba(18,48,36,0.25);">
+          <p id="cd-min" class="font-display" style="font-size:clamp(28px,6vw,44px); color:var(--emerald-900);">00</p>
+        </div>
+        <p class="eyebrow mt-3" style="color:#6b8f7f;">Minutes</p>
+      </div>
+      <div class="count-box reveal" data-reveal style="--i:3;">
+        <div class="py-5" style="border:1px solid rgba(18,48,36,0.25);">
+          <p id="cd-sec" class="font-display" style="font-size:clamp(28px,6vw,44px); color:var(--emerald-900);">00</p>
+        </div>
+        <p class="eyebrow mt-3" style="color:#6b8f7f;">Seconds</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENUE -->
+  <section id="venue" class="relative px-6 py-28 max-w-4xl mx-auto text-center">
+    <p class="eyebrow reveal" data-reveal>Venue</p>
+    <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(32px,6vw,48px); margin:14px 0 8px; color:var(--ivory);">Emerald Garden Estate</h2>
+    <p class="reveal" data-reveal style="color:var(--ivory-dim); font-size:15px;">14 Rosemont Avenue, Green Hills, Colombo</p>
+
+    <div class="reveal-scale mt-10 rounded overflow-hidden" data-reveal style="border:1px solid var(--line); aspect-ratio:16/8;">
+      <iframe
+        title="venue map"
+        src="https://www.google.com/maps?q=Colombo%20Sri%20Lanka&output=embed"
+        width="100%" height="100%" style="border:0; filter:grayscale(0.3) invert(0.92) contrast(0.9);"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-4 mt-10 reveal" data-reveal>
+      <a class="btn btn-solid" href="https://www.google.com/maps/dir/?api=1&destination=Colombo,Sri+Lanka" target="_blank" rel="noopener">Get Directions</a>
+      <a class="btn" href="tel:+94770000000">Call Venue</a>
+      <a class="btn" href="https://wa.me/94770000000" target="_blank" rel="noopener">WhatsApp Us</a>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="relative px-6 py-28 max-w-6xl mx-auto text-center">
+    <p class="eyebrow reveal" data-reveal>Gallery</p>
+    <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(32px,6vw,48px); margin:14px 0 40px; color:var(--ivory);">Moments we cherish</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 stagger">
+      <div class="gallery-item reveal-scale aspect-square" data-reveal style="--i:0;"><img loading="lazy" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600&auto=format&fit=crop" alt="Gallery photo 1"></div>
+      <div class="gallery-item reveal-scale aspect-square" data-reveal style="--i:1;"><img loading="lazy" src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=600&auto=format&fit=crop" alt="Gallery photo 2"></div>
+      <div class="gallery-item reveal-scale aspect-square" data-reveal style="--i:2;"><img loading="lazy" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600&auto=format&fit=crop" alt="Gallery photo 3"></div>
+      <div class="gallery-item reveal-scale aspect-square" data-reveal style="--i:3;"><img loading="lazy" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=600&auto=format&fit=crop" alt="Gallery photo 4"></div>
+      <div class="gallery-item reveal-scale aspect-square" data-reveal style="--i:4;"><img loading="lazy" src="https://images.unsplash.com/photo-1550005809-91ad75fb315f?q=80&w=600&auto=format&fit=crop" alt="Gallery photo 5"></div>
+      <div class="gallery-item reveal-scale aspect-square" data-reveal style="--i:5;"><img loading="lazy" src="https://images.unsplash.com/photo-1529636798458-92182e662485?q=80&w=600&auto=format&fit=crop" alt="Gallery photo 6"></div>
+    </div>
+  </section>
+  <div id="lightbox"><img id="lightboxImg" src="" alt=""></div>
+
+  <!-- RSVP -->
+  <section id="rsvp" class="relative px-6 py-28 max-w-xl mx-auto text-center">
+    <p class="eyebrow reveal" data-reveal>Questionnaire</p>
+    <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(32px,6vw,48px); margin:14px 0 6px; color:var(--ivory);">Kindly RSVP</h2>
+    <p class="reveal" data-reveal style="color:var(--ivory-dim); font-size:14px;">We would be honoured to have you join us. Please respond by 15 November 2026.</p>
+
+    <form id="rsvpForm" class="mt-12 space-y-8 text-left reveal" data-reveal>
+      <div><input type="text" placeholder="Full name" required></div>
+      <div>
+        <p class="eyebrow mb-3">Will you attend?</p>
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" class="rsvp-choice py-3 text-sm" data-val="yes">Joyfully accept</button>
+          <button type="button" class="rsvp-choice py-3 text-sm" data-val="no">Regretfully decline</button>
+        </div>
+      </div>
+      <div><input type="number" min="1" max="6" placeholder="Number of guests"></div>
+      <div><textarea rows="3" placeholder="A note for the couple (optional)"></textarea></div>
+      <button type="submit" class="btn btn-solid w-full justify-center">Send RSVP</button>
+    </form>
+
+    <div class="hline my-14 reveal" data-reveal></div>
+
+    <a href="https://wa.me/94770000000?text=Hi!%20I'd%20like%20to%20RSVP%20for%20Aqeel%20%26%20Hana's%20wedding." target="_blank" rel="noopener" class="btn reveal" data-reveal>RSVP via WhatsApp</a>
+  </section>
+
+  <!-- CLOSING -->
+  <footer class="relative px-6 py-28 text-center overflow-hidden">
+    <div class="glow" style="width:460px;height:460px; bottom:-160px; left:50%; transform:translateX(-50%);"></div>
+    <div class="ornament reveal-scale mx-auto mb-8" data-reveal style="width:160px; position:relative;">
+      <svg viewBox="0 0 160 40" fill="none"><path d="M5 20 C 40 2, 120 2, 155 20" stroke="#c9a25a" stroke-width="0.8"/><circle cx="80" cy="8" r="2.5" fill="#c9a25a"/></svg>
+    </div>
+    <p class="font-display italic reveal" data-reveal style="font-size:clamp(28px,6vw,42px); color:var(--ivory);">We can't wait to celebrate with you</p>
+    <p class="eyebrow mt-6 reveal" data-reveal>Aqeel &amp; Hana · 10.12.2026</p>
+    <p class="mt-16 reveal" data-reveal style="font-size:11px; color:rgba(245,239,226,0.35); letter-spacing:0.08em;">Made with love, for our wedding day.</p>
+  </footer>
+
+</main>
+
+<script>
+// ---------- Opening interaction ----------
+const opener = document.getElementById('opener');
+const mainContent = document.getElementById('mainContent');
+document.getElementById('openBtn').addEventListener('click', () => {
+  opener.classList.add('hidden');
+  document.body.style.overflow = 'auto';
+  setTimeout(() => { mainContent.style.opacity = 1; startPetals(); }, 250);
+});
+document.body.style.overflow = 'hidden';
+
+// ---------- Mobile menu ----------
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+mobileMenuBtn.addEventListener('click', () => {
+  const open = mobileMenu.style.visibility === 'visible';
+  mobileMenu.style.opacity = open ? 0 : 1;
+  mobileMenu.style.visibility = open ? 'hidden' : 'visible';
+});
+document.querySelectorAll('.mnav').forEach(a => a.addEventListener('click', () => {
+  mobileMenu.style.opacity = 0; mobileMenu.style.visibility = 'hidden';
+}));
+
+// ---------- Scroll reveal ----------
+const revealEls = document.querySelectorAll('[data-reveal]');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.18 });
+revealEls.forEach(el => io.observe(el));
+
+// ---------- Dot nav ----------
+const dots = document.querySelectorAll('.nav-dot');
+const sections = Array.from(dots).map(d => document.querySelector(d.dataset.target));
+dots.forEach(d => d.addEventListener('click', () => {
+  document.querySelector(d.dataset.target).scrollIntoView({behavior:'smooth'});
+}));
+window.addEventListener('scroll', () => {
+  let idx = 0;
+  sections.forEach((s, i) => { if (s && window.scrollY + window.innerHeight/2 >= s.offsetTop) idx = i; });
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+});
+
+// ---------- Countdown ----------
+const target = new Date('2026-12-10T12:30:00');
+function updateCountdown(){
+  const now = new Date();
+  let diff = target - now;
+  if (diff < 0) diff = 0;
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-sec').textContent = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ---------- Gallery lightbox ----------
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+document.querySelectorAll('.gallery-item img').forEach(img => {
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.add('show');
+  });
+});
+lightbox.addEventListener('click', () => lightbox.classList.remove('show'));
+
+// ---------- RSVP choice toggle ----------
+document.querySelectorAll('.rsvp-choice').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.rsvp-choice').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+document.getElementById('rsvpForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  const original = btn.textContent;
+  btn.textContent = 'Thank you ♥';
+  setTimeout(() => { btn.textContent = original; }, 2600);
+});
+
+// ---------- Add to calendar (.ics) ----------
+document.querySelectorAll('.addcal').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const { title, start, end, loc } = btn.dataset;
+    const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${title}\nDTSTART:${start}\nDTEND:${end}\nLOCATION:${loc}\nDESCRIPTION:Aqeel & Hana's Wedding\nEND:VEVENT\nEND:VCALENDAR`;
+    const blob = new Blob([ics], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = title.replace(/\s+/g,'_') + '.ics';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+});
+
+// ---------- Floating petals ----------
+function startPetals(){
+  const container = document.getElementById('petals');
+  function spawn(){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.animationDuration = (14 + Math.random()*10) + 's';
+    p.style.opacity = 0.3 + Math.random()*0.3;
+    p.style.transform = `scale(${0.6 + Math.random()*0.8})`;
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 26000);
+  }
+  setInterval(spawn, 1400);
+  for(let i=0;i<5;i++) setTimeout(spawn, i*400);
+}
+</script>
+</body>
+</html>
