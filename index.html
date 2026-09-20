@@ -59,6 +59,43 @@
     height:1px;
     background:linear-gradient(to right, transparent, var(--gold), transparent);
   }
+
+  /* ---------- timeline ---------- */
+  .timeline{
+    position:relative;
+    padding-left:36px;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute; left:5px; top:4px; bottom:4px; width:2px;
+    background:rgba(201,162,90,0.22);
+    border-radius:2px;
+  }
+  .timeline-fill{
+    position:absolute; left:5px; top:4px; width:2px; height:0%;
+    background:linear-gradient(to bottom, var(--gold), var(--gold-soft));
+    border-radius:2px;
+    box-shadow:0 0 10px rgba(201,162,90,0.55);
+  }
+  .timeline-item{
+    position:relative;
+    padding-bottom:52px;
+  }
+  .timeline-item:last-child{ padding-bottom:0; }
+  .timeline-item::before{
+    content:'';
+    position:absolute; left:-36px; top:3px;
+    width:12px; height:12px; border-radius:50%;
+    background:var(--emerald-900);
+    border:2px solid rgba(201,162,90,0.4);
+    transition:background .5s ease, border-color .5s ease, box-shadow .5s ease;
+  }
+  .timeline-item.in::before{
+    background:var(--gold);
+    border-color:var(--gold-soft);
+    box-shadow:0 0 10px rgba(201,162,90,0.6);
+  }
+
   .card-dark{
     background:radial-gradient(140% 100% at 50% 0%, var(--emerald-800) 0%, var(--emerald-900) 55%, var(--emerald-950) 100%);
     border:1px solid var(--line);
@@ -255,32 +292,6 @@
   }
   .nav-dot.active{ background:var(--gold); transform:scale(1.4); }
 
-  /* ---------- RSVP toggle ---------- */
-  .rsvp-choice{
-    border:1px solid var(--line);
-    transition:all .35s ease;
-  }
-  .rsvp-choice.active{
-    border-color:var(--gold);
-    background:rgba(201,162,90,0.1);
-    color:var(--gold-soft);
-  }
-
-  input, textarea{
-    background:transparent;
-    border:none;
-    border-bottom:1px solid var(--line);
-    color:var(--ivory);
-    font-family:'Jost',sans-serif;
-    font-weight:300;
-    padding:10px 2px;
-    width:100%;
-    outline:none;
-    transition:border-color .3s ease;
-  }
-  input::placeholder, textarea::placeholder{ color:rgba(245,239,226,0.4); }
-  input:focus, textarea:focus{ border-color:var(--gold); }
-
   .fade-line{
     background: repeating-linear-gradient(to right, var(--gold) 0, var(--gold) 4px, transparent 4px, transparent 10px);
     height:1px; opacity:.5;
@@ -339,6 +350,7 @@
 <nav id="dotNav" class="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-4">
   <div class="nav-dot" data-target="#hero"></div>
   <div class="nav-dot" data-target="#story"></div>
+  <div class="nav-dot" data-target="#timeline"></div>
   <div class="nav-dot" data-target="#details"></div>
   <div class="nav-dot" data-target="#countdown"></div>
   <div class="nav-dot" data-target="#venue"></div>
@@ -354,6 +366,7 @@
   <ul class="text-center space-y-6 font-display italic text-2xl">
     <li><a href="#hero" class="mnav" style="color:var(--ivory);">Hero</a></li>
     <li><a href="#story" class="mnav" style="color:var(--ivory);">Our Story</a></li>
+    <li><a href="#timeline" class="mnav" style="color:var(--ivory);">Journey</a></li>
     <li><a href="#details" class="mnav" style="color:var(--ivory);">Event</a></li>
     <li><a href="#countdown" class="mnav" style="color:var(--ivory);">Countdown</a></li>
     <li><a href="#venue" class="mnav" style="color:var(--ivory);">Venue</a></li>
@@ -427,6 +440,31 @@
   </section>
 
   <div class="max-w-3xl mx-auto px-6"><div class="hline reveal" data-reveal></div></div>
+
+  <!-- TIMELINE -->
+  <section id="timeline" class="relative px-6 py-20 max-w-2xl mx-auto text-center overflow-hidden">
+    <p class="eyebrow reveal" data-reveal>Our Journey</p>
+    <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(32px,6vw,48px); margin:14px 0 50px; color:var(--ivory);">Moments that led us here</h2>
+
+    <div class="timeline text-left mx-auto" style="max-width:420px;">
+      <div class="timeline-fill" id="timelineFill"></div>
+      <div class="timeline-item reveal" data-reveal>
+        <p class="font-sc text-[12px]" style="color:var(--gold);">15 APRIL</p>
+        <p class="font-display italic mt-2" style="font-size:24px; color:var(--ivory);">Our families meet</p>
+        <p class="mt-2" style="color:var(--ivory-dim); font-size:14px; line-height:1.7;">A quiet first meeting between our families — the very start of it all.</p>
+      </div>
+      <div class="timeline-item reveal" data-reveal style="transition-delay:150ms;">
+        <p class="font-sc text-[12px]" style="color:var(--gold);">17 JULY</p>
+        <p class="font-display italic mt-2" style="font-size:24px; color:var(--ivory);">Our engagement</p>
+        <p class="mt-2" style="color:var(--ivory-dim); font-size:14px; line-height:1.7;">We promised each other forever, surrounded by those we love.</p>
+      </div>
+      <div class="timeline-item reveal" data-reveal style="transition-delay:300ms;">
+        <p class="font-sc text-[12px]" style="color:var(--gold);">10 DECEMBER 2026</p>
+        <p class="font-display italic mt-2" style="font-size:24px; color:var(--ivory);">Our wedding — and now, we invite you</p>
+        <p class="mt-2" style="color:var(--ivory-dim); font-size:14px; line-height:1.7;">The beginning of forever. We'd be honoured to have you there.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- EVENT DETAILS -->
   <section id="details" class="relative px-6 py-20 max-w-5xl mx-auto">
@@ -528,27 +566,11 @@
 
   <!-- RSVP -->
   <section id="rsvp" class="relative px-6 py-20 max-w-xl mx-auto text-center">
-    <p class="eyebrow reveal" data-reveal>Questionnaire</p>
+    <p class="eyebrow reveal" data-reveal>RSVP</p>
     <h2 class="font-display italic reveal" data-reveal style="font-size:clamp(32px,6vw,48px); margin:14px 0 6px; color:var(--ivory);">Kindly RSVP</h2>
     <p class="reveal" data-reveal style="color:var(--ivory-dim); font-size:14px;">We would be honoured to have you join us. Please respond by 15 November 2026.</p>
 
-    <form id="rsvpForm" class="mt-8 space-y-8 text-left reveal" data-reveal>
-      <div><input type="text" placeholder="Full name" required></div>
-      <div>
-        <p class="eyebrow mb-3">Will you attend?</p>
-        <div class="grid grid-cols-2 gap-3">
-          <button type="button" class="rsvp-choice py-3 text-sm" data-val="yes">Joyfully accept</button>
-          <button type="button" class="rsvp-choice py-3 text-sm" data-val="no">Regretfully decline</button>
-        </div>
-      </div>
-      <div><input type="number" min="1" max="6" placeholder="Number of guests"></div>
-      <div><textarea rows="3" placeholder="A note for the couple (optional)"></textarea></div>
-      <button type="submit" class="btn btn-solid w-full justify-center">Send RSVP</button>
-    </form>
-
-    <div class="hline my-10 reveal" data-reveal></div>
-
-    <a href="https://wa.me/94770000000?text=Hi!%20I'd%20like%20to%20RSVP%20for%20Marlin%20%26%20Sahnas's%20wedding." target="_blank" rel="noopener" class="btn reveal" data-reveal>RSVP via WhatsApp</a>
+    <a href="https://wa.me/94770000000?text=Hi!%20I'd%20like%20to%20RSVP%20for%20Marlin%20%26%20Sahnas's%20wedding." target="_blank" rel="noopener" class="btn btn-solid mt-10 reveal" data-reveal>RSVP via WhatsApp</a>
   </section>
 
   <!-- CLOSING -->
@@ -629,8 +651,22 @@ const parallaxLayers = Array.from(document.querySelectorAll('.glow, .bg-photo'))
   current: 0,
 }));
 
+// ---------- Timeline scroll fill ----------
+const timelineTrack = document.querySelector('.timeline');
+const timelineFill = document.getElementById('timelineFill');
+function updateTimelineFill(){
+  if (!timelineTrack || !timelineFill) return;
+  const rect = timelineTrack.getBoundingClientRect();
+  const vh = window.innerHeight;
+  // 0 when the track's top just enters the bottom of the screen,
+  // 1 once its bottom has scrolled past the top of the screen
+  const progress = (vh - rect.top) / (rect.height + vh);
+  timelineFill.style.height = (Math.max(0, Math.min(1, progress)) * 100).toFixed(1) + '%';
+}
+
 function frameLoop(){
   if (dotNavDirty) { updateDotNav(); dotNavDirty = false; }
+  updateTimelineFill();
   if (!reduceMotion) {
     parallaxLayers.forEach(p => {
       const target = Math.max(-p.clamp, Math.min(p.clamp, p.parent.getBoundingClientRect().top * p.speed));
@@ -670,21 +706,6 @@ document.querySelectorAll('.gallery-item img').forEach(img => {
   });
 });
 lightbox.addEventListener('click', () => lightbox.classList.remove('show'));
-
-// ---------- RSVP choice toggle ----------
-document.querySelectorAll('.rsvp-choice').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.rsvp-choice').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  });
-});
-document.getElementById('rsvpForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const btn = e.target.querySelector('button[type="submit"]');
-  const original = btn.textContent;
-  btn.textContent = 'Thank you ♥';
-  setTimeout(() => { btn.textContent = original; }, 2600);
-});
 
 // ---------- Add to calendar (.ics) ----------
 document.querySelectorAll('.addcal').forEach(btn => {
