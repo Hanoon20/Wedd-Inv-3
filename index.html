@@ -123,6 +123,13 @@
     pointer-events:none;
     will-change:transform, opacity;
   }
+  /* lighter render cost for touch devices: a single soft glow instead of
+     three layered (incl. inset) shadows, which are expensive to repaint
+     inside a position:fixed layer while the page scrolls */
+  .petal.lite{
+    box-shadow: 0 0 6px rgba(201,162,90,0.2);
+    border-color: rgba(227,201,138,0.22);
+  }
 
   /* ---------- opening screen ---------- */
   #opener{
@@ -356,7 +363,7 @@
 </div>
 
 <!-- ===================== PETALS CONTAINER ===================== -->
-<div id="petals" class="fixed inset-0 pointer-events-none z-20"></div>
+<div id="petals" class="fixed inset-0 pointer-events-none z-20" style="transform:translateZ(0); will-change:transform;"></div>
 
 <!-- ===================== MAIN ===================== -->
 <main id="mainContent" style="opacity:0; transition:opacity 1.4s ease;">
@@ -701,14 +708,14 @@ function startPetals(){
   // stutter/flicker while the page scrolls, so touch devices skip the
   // blur and get fewer, lighter bubbles instead.
   const isTouch = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
-  const maxBubbles = isTouch ? 9 : 18;
-  const spawnEvery = isTouch ? 1100 : 750;
+  const maxBubbles = isTouch ? 7 : 18;
+  const spawnEvery = isTouch ? 1300 : 750;
   function spawn(){
     if (container.childElementCount >= maxBubbles) return;
     const p = document.createElement('div');
-    p.className = 'petal';
+    p.className = isTouch ? 'petal lite' : 'petal';
     const depth = Math.random(); // 0 = far/background, 1 = near/foreground
-    const size = 7 + depth * 30; // 7px..37px
+    const size = (isTouch ? 5 : 7) + depth * (isTouch ? 16 : 30); // smaller range on touch
     const duration = 24 - depth * 11; // nearer bubbles drift faster: 13s..24s
     p.style.left = Math.random() * 100 + 'vw';
     p.style.width = size + 'px';
@@ -716,13 +723,20 @@ function startPetals(){
     p.style.setProperty('--o', (0.08 + depth * 0.22).toFixed(2));
     p.style.setProperty('--s', (0.9 + Math.random() * 0.25).toFixed(2));
     p.style.animationDuration = duration.toFixed(1) + 's';
+    // start each bubble partway through its cycle at a random point so
+    // they're already spread across the full height instead of every
+    // new batch bunching up low near the spawn point
+    const elapsed = Math.random() * duration;
+    p.style.animationDelay = '-' + elapsed.toFixed(1) + 's';
     if (!isTouch) {
       const blur = (1 - depth) * 3; // farther bubbles are softer, out of focus
       p.style.filter = blur > 0.15 ? `blur(${blur.toFixed(1)}px)` : 'none';
     }
     p.style.zIndex = String(Math.round(depth * 10));
     container.appendChild(p);
-    setTimeout(() => p.remove(), duration * 1000 + 500);
+    // remove once its (already-offset) cycle reaches its natural fade-out
+    // point, rather than after a full duration, so it never pops mid-fade
+    setTimeout(() => p.remove(), (duration - elapsed) * 1000 + 400);
   }
   setInterval(spawn, spawnEvery);
   for(let i=0;i<8;i++) setTimeout(spawn, i*250);
