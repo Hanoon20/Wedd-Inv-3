@@ -696,25 +696,35 @@ document.querySelectorAll('.addcal').forEach(btn => {
 // ---------- Floating bubbles (depth-layered) ----------
 function startPetals(){
   const container = document.getElementById('petals');
+  // CSS blur filters inside a position:fixed layer that's constantly
+  // animating are heavy on mobile GPUs and cause the whole layer to
+  // stutter/flicker while the page scrolls, so touch devices skip the
+  // blur and get fewer, lighter bubbles instead.
+  const isTouch = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+  const maxBubbles = isTouch ? 5 : 10;
+  const spawnEvery = isTouch ? 2000 : 1400;
   function spawn(){
+    if (container.childElementCount >= maxBubbles) return;
     const p = document.createElement('div');
     p.className = 'petal';
     const depth = Math.random(); // 0 = far/background, 1 = near/foreground
     const size = 7 + depth * 30; // 7px..37px
     const duration = 24 - depth * 11; // nearer bubbles drift faster: 13s..24s
-    const blur = (1 - depth) * 3; // farther bubbles are softer, out of focus
     p.style.left = Math.random() * 100 + 'vw';
     p.style.width = size + 'px';
     p.style.height = size + 'px';
     p.style.setProperty('--o', (0.18 + depth * 0.42).toFixed(2));
     p.style.setProperty('--s', (0.9 + Math.random() * 0.25).toFixed(2));
     p.style.animationDuration = duration.toFixed(1) + 's';
-    p.style.filter = blur > 0.15 ? `blur(${blur.toFixed(1)}px)` : 'none';
+    if (!isTouch) {
+      const blur = (1 - depth) * 3; // farther bubbles are softer, out of focus
+      p.style.filter = blur > 0.15 ? `blur(${blur.toFixed(1)}px)` : 'none';
+    }
     p.style.zIndex = String(Math.round(depth * 10));
     container.appendChild(p);
     setTimeout(() => p.remove(), duration * 1000 + 500);
   }
-  setInterval(spawn, 1400);
+  setInterval(spawn, spawnEvery);
   for(let i=0;i<5;i++) setTimeout(spawn, i*400);
 }
 </script>
