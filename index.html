@@ -101,18 +101,27 @@
     filter:blur(10px); pointer-events:none;
   }
   @keyframes drift{
-    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
-    10%{ opacity:.55; }
-    90%{ opacity:.4; }
-    100%{ transform:translateY(-120vh) translateX(30px) rotate(200deg); opacity:0; }
+    0%{ transform:translate3d(0,0,0) scale(var(--s,1)); opacity:0; }
+    8%{ opacity:var(--o,.5); }
+    28%{ transform:translate3d(16px,-28vh,0) scale(var(--s,1)); }
+    52%{ transform:translate3d(-18px,-56vh,0) scale(var(--s,1)); }
+    76%{ transform:translate3d(12px,-86vh,0) scale(var(--s,1)); }
+    92%{ opacity:var(--o,.5); }
+    100%{ transform:translate3d(-8px,-118vh,0) scale(var(--s,1)); opacity:0; }
   }
   .petal{
     position:absolute; bottom:-10%;
-    width:14px; height:14px;
-    background:radial-gradient(circle at 30% 30%, var(--gold-soft), transparent 70%);
-    border-radius:60% 40% 60% 40%;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 30% 26%, rgba(255,255,255,0.95) 0%, rgba(255,244,214,0.55) 14%, rgba(227,201,138,0.42) 38%, rgba(201,162,90,0.22) 62%, rgba(201,162,90,0.06) 80%, transparent 92%);
+    box-shadow:
+      inset -2px -3px 5px rgba(8,23,15,0.22),
+      inset 2px 3px 5px rgba(255,255,255,0.5),
+      0 0 10px rgba(201,162,90,0.25);
+    border:1px solid rgba(227,201,138,0.35);
     animation:drift linear infinite;
     pointer-events:none;
+    will-change:transform, opacity;
   }
 
   /* ---------- opening screen ---------- */
@@ -283,7 +292,7 @@
      or an https:// link). Recommended size: 1600px wide or more.
      ========================================================= */
   .bg-photo{
-    position:absolute; inset:0; z-index:0;
+    position:absolute; top:-10%; bottom:-10%; left:0; right:0; z-index:0;
     background-size:cover; background-position:center; background-repeat:no-repeat;
   }
   .bg-photo::after{
@@ -593,11 +602,38 @@ const sections = Array.from(dots).map(d => document.querySelector(d.dataset.targ
 dots.forEach(d => d.addEventListener('click', () => {
   document.querySelector(d.dataset.target).scrollIntoView({behavior:'smooth'});
 }));
-window.addEventListener('scroll', () => {
+let dotNavDirty = true;
+window.addEventListener('scroll', () => { dotNavDirty = true; }, { passive: true });
+function updateDotNav(){
   let idx = 0;
   sections.forEach((s, i) => { if (s && window.scrollY + window.innerHeight/2 >= s.offsetTop) idx = i; });
   dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-});
+}
+
+// ---------- Background parallax depth ----------
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const parallaxLayers = Array.from(document.querySelectorAll('.glow, .bg-photo')).map(el => ({
+  el,
+  parent: el.parentElement,
+  base: el.style.transform ? el.style.transform + ' ' : '',
+  isPhoto: el.classList.contains('bg-photo'),
+  speed: el.classList.contains('bg-photo') ? 0.12 : 0.22,
+  clamp: el.classList.contains('bg-photo') ? 48 : 90,
+  current: 0,
+}));
+
+function frameLoop(){
+  if (dotNavDirty) { updateDotNav(); dotNavDirty = false; }
+  if (!reduceMotion) {
+    parallaxLayers.forEach(p => {
+      const target = Math.max(-p.clamp, Math.min(p.clamp, p.parent.getBoundingClientRect().top * p.speed));
+      p.current += (target - p.current) * 0.07;
+      p.el.style.transform = `${p.base}translate3d(0, ${p.current.toFixed(1)}px, 0)`;
+    });
+  }
+  requestAnimationFrame(frameLoop);
+}
+requestAnimationFrame(frameLoop);
 
 // ---------- Countdown ----------
 const target = new Date('2026-12-10T12:30:00');
@@ -657,18 +693,26 @@ document.querySelectorAll('.addcal').forEach(btn => {
   });
 });
 
-// ---------- Floating petals ----------
+// ---------- Floating bubbles (depth-layered) ----------
 function startPetals(){
   const container = document.getElementById('petals');
   function spawn(){
     const p = document.createElement('div');
     p.className = 'petal';
-    p.style.left = Math.random()*100 + 'vw';
-    p.style.animationDuration = (14 + Math.random()*10) + 's';
-    p.style.opacity = 0.3 + Math.random()*0.3;
-    p.style.transform = `scale(${0.6 + Math.random()*0.8})`;
+    const depth = Math.random(); // 0 = far/background, 1 = near/foreground
+    const size = 7 + depth * 30; // 7px..37px
+    const duration = 24 - depth * 11; // nearer bubbles drift faster: 13s..24s
+    const blur = (1 - depth) * 3; // farther bubbles are softer, out of focus
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.setProperty('--o', (0.18 + depth * 0.42).toFixed(2));
+    p.style.setProperty('--s', (0.9 + Math.random() * 0.25).toFixed(2));
+    p.style.animationDuration = duration.toFixed(1) + 's';
+    p.style.filter = blur > 0.15 ? `blur(${blur.toFixed(1)}px)` : 'none';
+    p.style.zIndex = String(Math.round(depth * 10));
     container.appendChild(p);
-    setTimeout(() => p.remove(), 26000);
+    setTimeout(() => p.remove(), duration * 1000 + 500);
   }
   setInterval(spawn, 1400);
   for(let i=0;i<5;i++) setTimeout(spawn, i*400);
