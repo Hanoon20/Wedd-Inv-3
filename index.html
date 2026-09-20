@@ -701,8 +701,8 @@ function startPetals(){
   // stutter/flicker while the page scrolls, so touch devices skip the
   // blur and get fewer, lighter bubbles instead.
   const isTouch = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
-  const maxBubbles = isTouch ? 5 : 10;
-  const spawnEvery = isTouch ? 2000 : 1400;
+  const maxBubbles = isTouch ? 9 : 18;
+  const spawnEvery = isTouch ? 1100 : 750;
   function spawn(){
     if (container.childElementCount >= maxBubbles) return;
     const p = document.createElement('div');
@@ -713,7 +713,7 @@ function startPetals(){
     p.style.left = Math.random() * 100 + 'vw';
     p.style.width = size + 'px';
     p.style.height = size + 'px';
-    p.style.setProperty('--o', (0.18 + depth * 0.42).toFixed(2));
+    p.style.setProperty('--o', (0.08 + depth * 0.22).toFixed(2));
     p.style.setProperty('--s', (0.9 + Math.random() * 0.25).toFixed(2));
     p.style.animationDuration = duration.toFixed(1) + 's';
     if (!isTouch) {
@@ -725,7 +725,7 @@ function startPetals(){
     setTimeout(() => p.remove(), duration * 1000 + 500);
   }
   setInterval(spawn, spawnEvery);
-  for(let i=0;i<5;i++) setTimeout(spawn, i*400);
+  for(let i=0;i<8;i++) setTimeout(spawn, i*250);
 }
 </script>
 </body>
